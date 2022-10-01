@@ -1,0 +1,77 @@
+{
+  "name": "driver-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/driver-app/src",
+  "projectType": "application",
+  "targets": {
+    "start": {
+      "executor": "@nrwl/react-native:start",
+      "options": {
+        "port": 8081
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nx start driver-app"
+      }
+    },
+    "run-ios": {
+      "executor": "@nrwl/react-native:run-ios",
+      "options": {}
+    },
+    "bundle-ios": {
+      "executor": "@nrwl/react-native:bundle",
+      "outputs": ["apps/driver-app/build"],
+      "options": {
+        "entryFile": "src/main.tsx",
+        "platform": "ios",
+        "bundleOutput": "dist/apps/driver-app/ios/main.jsbundle"
+      }
+    },
+    "run-android": {
+      "executor": "@nrwl/react-native:run-android",
+      "options": {}
+    },
+    "build-android": {
+      "executor": "@nrwl/react-native:build-android",
+      "outputs": [
+        "apps/driver-app/android/app/build/outputs/bundle",
+        "apps/driver-app/android/app/build/outputs/apk"
+      ],
+      "options": {}
+    },
+    "bundle-android": {
+      "executor": "@nrwl/react-native:bundle",
+      "options": {
+        "entryFile": "src/main.tsx",
+        "platform": "android",
+        "bundleOutput": "dist/apps/driver-app/android/main.jsbundle"
+      }
+    },
+    "sync-deps": {
+      "executor": "@nrwl/react-native:sync-deps",
+      "options": {}
+    },
+    "ensure-symlink": {
+      "executor": "@nrwl/react-native:ensure-symlink",
+      "options": {}
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/driver-app/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/driver-app"],
+      "options": {
+        "jestConfig": "apps/driver-app/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

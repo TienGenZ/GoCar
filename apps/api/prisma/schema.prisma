@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  client
+  driver
+  dispatcher
+}
+
+enum CarType {
+  client
+  driver
+  dispatcher
+}
+
+enum ScheduleStatus {
+  bookCarSuccess
+  bookCarFailed
+  clientCancelFailed
+  clientCancelSuccess
+  driverApproveSuccess
+  driverCancelSuccess
+  dispatcherCreateTicketFailed
+  dispatcherCreateTicketSuccess
+}
+
+enum paymentType {
+  cash
+  bankTransfer
+  momo
+}
+
+model Client {
+  id       Int        @id @default(autoincrement())
+  username String     @unique
+  phone    String
+  name     String
+  address  String
+  password String
+  schedule Schedule[]
+
+  @@map("client")
+}
+
+model Driver {
+  id       Int        @id @default(autoincrement())
+  username String     @unique
+  password String
+  phone    String
+  name     String
+  car      Car[]
+  schedule Schedule[]
+
+  @@map("driver")
+}
+
+model Car {
+  id            Int     @id @default(autoincrement())
+  driverId      Int
+  driver        Driver  @relation(fields: [driverId], references: [id])
+  type          CarType
+  licensePlates String
+
+  @@map("car")
+}
+
+model Schedule {
+  id          Int            @id @default(autoincrement())
+  clientId    Int
+  client      Client         @relation(fields: [clientId], references: [id])
+  driverId    Int
+  driver      Driver         @relation(fields: [driverId], references: [id])
+  startPoint  String
+  endPoint    String
+  price       String
+  paymentType paymentType    @default(cash)
+  status      ScheduleStatus
+  createdAt   DateTime       @default(now()) @db.Timestamptz
+  updatedAt   DateTime       @updatedAt @db.Timestamptz
+
+  @@map("schedule")
+}
