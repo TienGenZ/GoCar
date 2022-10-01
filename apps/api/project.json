@@ -54,6 +54,20 @@
         "jestConfig": "apps/api/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "prisma-generate": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "commands": ["yarn prisma generate --schema apps/api/prisma/schema.prisma"]
+      }
+    },
+    "prisma-migrate-dev": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "yarn prisma migrate dev --schema apps/api/prisma/schema.prisma"
+      }
     }
   },
   "tags": []
